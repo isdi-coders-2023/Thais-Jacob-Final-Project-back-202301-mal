@@ -1,10 +1,11 @@
 {
   "name": "malaguide-app-backend",
   "version": "1.0.0",
-  "description": "This is a project with default configs",
+  "description": "Malaguide",
   "main": "dist/server.js",
   "type": "module",
   "scripts": {
+    "start:dev": "node dist/server.js --watch",
     "build": "tsc",
     "build:w": "tsc -w",
     "start": "node dist/server.js",
@@ -32,6 +33,7 @@
     "@types/jsonwebtoken": "^9.0.1",
     "@types/mongodb-memory-server": "^2.3.0",
     "@types/node": "^18.14.0",
+    "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
     "eslint": "^8.34.0",
@@ -39,7 +41,9 @@
     "husky": "^8.0.0",
     "jest": "^29.4.3",
     "jest-ts-webcompat-resolver": "^1.0.0",
+    "mongodb-memory-server": "^8.11.5",
     "prettier": "^2.8.4",
+    "supertest": "^6.3.3",
     "ts-jest": "^29.0.5",
     "typescript": "^4.9.5"
   },
@@ -53,10 +57,11 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-validation": "^4.1.0",
+    "express-validator": "^6.15.0",
     "jsonwebtoken": "^9.0.0",
     "mongodb-memory-server": "^8.11.5",
+    "logger": "^0.0.1",
     "mongoose": "^7.0.1",
-    "multer": "^1.4.5-lts.1",
-    "supertest": "^6.3.3"
+    "multer": "^1.4.5-lts.1"
   }
 }
