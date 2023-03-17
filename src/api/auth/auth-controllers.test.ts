@@ -4,6 +4,7 @@ import { loginUserController } from './auth-controllers.js';
 import dotenv from 'dotenv';
 dotenv.config();
 import { generateJWTToken } from './auth-utils.js';
+import { CustomHTTPError } from '../../utils/custom-http-error.js';
 
 describe('Given a loginUserController', () => {
   const request = {
@@ -16,6 +17,9 @@ describe('Given a loginUserController', () => {
     status: jest.fn().mockReturnThis(),
     json: jest.fn().mockReturnThis(),
   } as Partial<Response>;
+
+  const next = jest.fn();
+
   const tokenJWT = {
     accessToken: generateJWTToken(request.body.email),
   };
@@ -37,14 +41,9 @@ describe('Given a loginUserController', () => {
     UserModel.findOne = jest.fn().mockImplementation(() => ({
       exec: jest.fn().mockResolvedValue(null),
     }));
-    await loginUserController(
-      request as Request,
-      response as Response,
-      jest.fn(),
+    await loginUserController(request as Request, response as Response, next);
+    expect(next).toHaveBeenCalledWith(
+      new CustomHTTPError(404, 'User or password does not exists'),
     );
-    expect(response.status).toHaveBeenCalledWith(404);
-    expect(response.json).toHaveBeenCalledWith({
-      message: 'The user does not exist',
-    });
   });
 });
