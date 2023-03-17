@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { ValidationError } from 'express-validation';
 import { errorHandler } from '../utils/error-handler.js';
+import { CustomHTTPError } from './custom-http-error.js';
 
 describe('Given an errorHandler', () => {
   let mockRequest: Partial<Request>;
@@ -24,10 +25,10 @@ describe('Given an errorHandler', () => {
       nextFunction,
     );
     expect(mockResponse.status).toHaveBeenCalledWith(500);
-    expect(mockResponse.json).toHaveBeenCalledWith(mockError);
+    expect(mockResponse.json).toHaveBeenCalledWith('An error occurred');
   });
 
-  test('should handler ValidationError', () => {
+  test('Should return a handler ValidationError', () => {
     const mockError = new ValidationError({}, { statusCode: 400 });
 
     const expectedResponse = {
@@ -47,5 +48,27 @@ describe('Given an errorHandler', () => {
       expectedResponse.statusCode,
     );
     expect(nextFunction).not.toHaveBeenCalled();
+  });
+
+  test('Should return a custom HTTP error', () => {
+    const mockError = new CustomHTTPError(404, 'Not Found');
+
+    const expectedResponse = {
+      httpCode: 404,
+      body: {
+        code: undefined,
+        msg: 'Not Found',
+      },
+    };
+
+    errorHandler(
+      mockError,
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction,
+    );
+
+    expect(mockResponse.status).toHaveBeenCalledWith(expectedResponse.httpCode);
+    expect(mockResponse.json).toHaveBeenCalledWith(expectedResponse.body);
   });
 });
