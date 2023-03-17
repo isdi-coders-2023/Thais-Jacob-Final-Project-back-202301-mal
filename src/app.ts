@@ -22,8 +22,6 @@ app.use('/api/v1', apiRouter);
 
 app.use(bodyParser.json());
 
-app.use(errorHandler);
-
 app.disable('x-powered-by');
-
+app.use(errorHandler);
 export default app;
