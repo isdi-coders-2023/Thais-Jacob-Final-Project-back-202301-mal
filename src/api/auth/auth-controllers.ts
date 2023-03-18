@@ -1,13 +1,17 @@
 import { RequestHandler } from 'express';
-import { AuthRequest, LoginResponse } from '../../types/auth-types.js';
+import {
+  LoginRequest,
+  LoginResponse,
+  RegisterRequest,
+} from '../../types/auth-types.js';
 import { CustomHTTPError } from '../../utils/custom-http-error.js';
-import { UserModel } from '../users/user-schema.js';
+import { User, UserModel } from '../users/user-schema.js';
 import { encryptPassword, generateJWTToken } from './auth-utils.js';
 
 export const loginUserController: RequestHandler<
   unknown,
   LoginResponse | { message: string },
-  AuthRequest
+  LoginRequest
 > = async (req, res, next) => {
   const { email, password } = req.body;
   const filterUser = {
@@ -25,4 +29,33 @@ export const loginUserController: RequestHandler<
   res.status(201).json({
     accessToken: tokenJWT,
   });
+};
+
+export const registerUserController: RequestHandler<
+  unknown,
+  unknown,
+  RegisterRequest
+> = async (req, res, next) => {
+  const { name, email, password } = req.body;
+
+  const existingUser = await UserModel.findOne({ email }).exec();
+
+  if (existingUser !== null) {
+    return next(
+      new CustomHTTPError(
+        409,
+        'A user with this email address is already registered',
+      ),
+    );
+  }
+
+  const newUser: User = {
+    name,
+    email,
+    password: encryptPassword(password),
+  };
+
+  await UserModel.create(newUser);
+
+  res.status(201).json({ msg: 'New user successfully created!' });
 };

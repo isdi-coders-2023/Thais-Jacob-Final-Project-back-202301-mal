@@ -1,12 +1,16 @@
 import express from 'express';
 import { validate } from 'express-validation';
-import { loginUserController } from './auth-controllers.js';
+import {
+  loginUserController,
+  registerUserController,
+} from './auth-controllers.js';
 import { authValidation } from './auth-validation.js';
 
-const router = express.Router();
+const authRouter = express.Router();
 
-router.use(validate(authValidation));
+authRouter.use(validate(authValidation));
 
-router.route('/login').post(loginUserController);
+authRouter.route('/register').post(registerUserController);
+authRouter.route('/login').post(loginUserController);
 
-export default router;
+export default authRouter;

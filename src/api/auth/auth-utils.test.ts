@@ -72,7 +72,7 @@ describe('createCypher', () => {
 });
 
 describe('generateJWTToken', () => {
-  it('should generate a JWT token with the provided email and secret', () => {
+  test('should generate a JWT token with the provided email and secret', () => {
     const email = 'test@example.com';
     process.env.JWT_SECRET = 'holo';
 
@@ -82,7 +82,7 @@ describe('generateJWTToken', () => {
     expect(decoded.email).toBe(email);
   });
 
-  it('should throw an error if JWT_SECRET environment variable is not defined', () => {
+  test('should throw an error if JWT_SECRET environment variable is not defined', () => {
     delete process.env.JWT_SECRET;
 
     expect(() => generateJWTToken('test@example.com')).toThrowError(
