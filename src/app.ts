@@ -9,19 +9,21 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
-app.use(cors({ origin: ['http://localhost:4000/'] }));
+app.disable('x-powered-by');
 
-app.use(express.json());
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.json('Server ON');
 });
+
+app.use(express.json());
+
 app.use('/auth', authRouter);
 app.use('/api/v1', apiRouter);
 
 app.use(bodyParser.json());
 
-app.disable('x-powered-by');
 app.use(errorHandler);
+
 export default app;
