@@ -7,9 +7,7 @@ import {
 
 const router = express.Router();
 
-router
-  .route('/')
-  .post(upload.single('image'), createTourController)
-  .get(getToursController);
+router.route('/').get(getToursController);
+router.route('/create').post(upload.single('image'), createTourController);
 
 export default router;
