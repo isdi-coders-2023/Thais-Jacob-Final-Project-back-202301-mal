@@ -59,3 +59,16 @@ export const createTourController: RequestHandler<
     res.sendStatus(201);
   }
 };
+
+const queryProjection = {
+  __v: 0,
+};
+
+export const getToursController: RequestHandler = async (_req, res, next) => {
+  try {
+    const tours = await TourModel.find({}, queryProjection).exec();
+    res.sendStatus(200).json(tours);
+  } catch (error) {
+    next(error);
+  }
+};

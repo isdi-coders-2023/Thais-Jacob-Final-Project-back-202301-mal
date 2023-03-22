@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Tour, TourModel } from '../tour-schema';
 import { TourRequest, UserLocalsAuthInfo } from '../../../types/models';
-import { createTourController } from '../tour-controllers';
+import { createTourController, getToursController } from '../tour-controllers';
 import { UserModel } from '../../users/user-schema';
 import { CustomHTTPError } from '../../../utils/custom-http-error';
 
@@ -31,6 +31,8 @@ jest.mock('@supabase/supabase-js', () => {
   };
 });
 
+const next = jest.fn();
+
 describe('Given a createTourController to create an tour', () => {
   const mockDate = new Date('2020-01-01');
 
@@ -57,8 +59,6 @@ describe('Given a createTourController to create an tour', () => {
     sendStatus: jest.fn().mockReturnThis(),
     locals: { email: 'thais@gmail.com' },
   } as Partial<Response<Tour | { message: string }, UserLocalsAuthInfo>>;
-
-  const next = jest.fn();
 
   const tour = {
     tittle: 'Test Tour',
@@ -114,5 +114,49 @@ describe('Given a createTourController to create an tour', () => {
     expect(next).toHaveBeenCalledWith(
       new CustomHTTPError(404, 'User is not found'),
     );
+  });
+});
+
+describe('Given a getToursController to create an tour', () => {
+  const request = {};
+  const response = {
+    json: jest.fn(),
+    sendStatus: jest.fn().mockReturnThis(),
+  } as Partial<Response>;
+
+  const tours = [
+    {
+      _id: 'random id test',
+      tittle: 'tittle test',
+      summary: 'Summary test.',
+      video: 'https://www.youtube.com/test',
+      image: 'https://gezblnovnlcdlfebhteu.supabase.co/test.jpg',
+      meetingPoint: 'C. Test, s/n',
+      price: 10,
+      date: '1977-11-07T00:00:00.000Z',
+      category: 'test',
+      assistants: [],
+      creator: 'random id creator',
+    },
+  ];
+
+  test('when the database response is successfull it, then it should respond with a list of tours', async () => {
+    TourModel.find = jest.fn().mockImplementation(() => ({
+      exec: jest.fn().mockResolvedValue(tours),
+    }));
+    await getToursController(
+      request as Request,
+      response as Response,
+      jest.fn(),
+    );
+    expect(response.sendStatus).toHaveBeenCalledWith(200);
+  });
+
+  test('when the database throws an error then it should respond with status 500', async () => {
+    TourModel.find = jest.fn();
+
+    await getToursController(request as Request, response as Response, next);
+
+    expect(next).toHaveBeenCalled();
   });
 });
