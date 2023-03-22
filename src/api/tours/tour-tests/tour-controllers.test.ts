@@ -149,7 +149,7 @@ describe('Given a getToursController to create an tour', () => {
       response as Response,
       jest.fn(),
     );
-    expect(response.sendStatus).toHaveBeenCalledWith(200);
+    expect(response.json).toHaveBeenCalled();
   });
 
   test('when the database throws an error then it should respond with status 500', async () => {
