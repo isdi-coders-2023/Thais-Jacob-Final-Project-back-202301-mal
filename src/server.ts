@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import app from './app.js';
-import connectDB from './database/connection.js';
+import connectDB from './database/mongodb.js';
 import log from './logger.js';
 
 dotenv.config();
