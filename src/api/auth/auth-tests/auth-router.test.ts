@@ -10,6 +10,7 @@ dotenv.config();
 
 describe('Given an app with auth-router', () => {
   let mongoServer: MongoMemoryServer;
+  const OLD_ENV = process.env;
 
   beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
@@ -20,6 +21,7 @@ describe('Given an app with auth-router', () => {
   afterAll(async () => {
     await mongoServer.stop();
     await mongoose.connection.close();
+    process.env = { ...OLD_ENV };
   });
 
   describe('When a user wants to log in with an existing email and pasasword', () => {
