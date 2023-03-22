@@ -3,6 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import apiRouter from './api/api-router.js';
 import authRouter from './api/auth/auth-router.js';
+import { authMiddleware } from './api/auth/auth-middleware.js';
 import { errorHandler } from './utils/error-handler.js';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -20,7 +21,7 @@ app.get('/', (req, res) => {
 app.use(express.json());
 
 app.use('/auth', authRouter);
-app.use('/api/v1', apiRouter);
+app.use('/api/v1', authMiddleware, apiRouter);
 
 app.use(bodyParser.json());
 
