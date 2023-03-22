@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { createCypher, generateJWTToken } from './auth-utils.js';
+import { createCypher, generateJWTToken } from '../auth-utils.js';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Error } from 'mongoose';
 
