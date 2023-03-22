@@ -1,6 +1,5 @@
-import { UserLocalsAuthInfo } from '../../types/models.js';
+import { UserLocalsAuthInfo, TourRequest } from '../../types/models.js';
 import { Tour, TourModel } from './tour-schema.js';
-import { TourRequest } from '../../types/models.js';
 import { UserModel } from '../users/user-schema.js';
 import { supabase, TOURS_BUCKET_NAME } from '../../database/supabase.js';
 import log from '../../logger.js';
