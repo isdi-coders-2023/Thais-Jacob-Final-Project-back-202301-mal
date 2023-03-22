@@ -3,7 +3,7 @@ import {
   LoginRequest,
   LoginResponse,
   RegisterRequest,
-} from '../../types/auth-types.js';
+} from '../../types/models.js';
 import { CustomHTTPError } from '../../utils/custom-http-error.js';
 import { User, UserModel } from '../users/user-schema.js';
 import { encryptPassword, generateJWTToken } from './auth-utils.js';

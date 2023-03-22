@@ -5,6 +5,8 @@ import {
   registerUserController,
 } from './auth-controllers.js';
 import { authValidation } from './auth-validation.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const authRouter = express.Router();
 

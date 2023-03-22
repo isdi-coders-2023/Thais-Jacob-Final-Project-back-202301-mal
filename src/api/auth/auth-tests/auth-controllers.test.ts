@@ -1,13 +1,15 @@
-import { UserModel } from '../users/user-schema.js';
+import { UserModel } from '../../users/user-schema.js';
 import { Request, Response } from 'express';
 import {
   loginUserController,
   registerUserController,
-} from './auth-controllers.js';
+} from '../auth-controllers.js';
 import dotenv from 'dotenv';
 dotenv.config();
-import { encryptPassword, generateJWTToken } from './auth-utils.js';
-import { CustomHTTPError } from '../../utils/custom-http-error.js';
+
+import { encryptPassword, generateJWTToken } from '../auth-utils.js';
+
+import { CustomHTTPError } from '../../../utils/custom-http-error.js';
 
 describe('Given a loginUserController', () => {
   const request = {

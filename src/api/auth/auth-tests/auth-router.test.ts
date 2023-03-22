@@ -1,13 +1,16 @@
 import request from 'supertest';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import connectDB from '../../database/connection.js';
-import app from '../../app.js';
-import { UserModel } from '../users/user-schema.js';
-import { encryptPassword } from './auth-utils.js';
+import connectDB from '../../../../src/database/mongodb';
+import app from '../../../app.js';
+import { UserModel } from '../../users/user-schema.js';
+import { encryptPassword } from '../auth-utils.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 describe('Given an app with auth-router', () => {
   let mongoServer: MongoMemoryServer;
+  const OLD_ENV = process.env;
 
   beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
@@ -18,6 +21,7 @@ describe('Given an app with auth-router', () => {
   afterAll(async () => {
     await mongoServer.stop();
     await mongoose.connection.close();
+    process.env = { ...OLD_ENV };
   });
 
   describe('When a user wants to log in with an existing email and pasasword', () => {
