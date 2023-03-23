@@ -66,8 +66,8 @@ const queryProjection = {
 
 export const getToursController: RequestHandler = async (_req, res, next) => {
   try {
-    const tours = await TourModel.find({}, queryProjection).exec();
-    res.json(tours);
+    const toursResponse = await TourModel.find({}, queryProjection).exec();
+    res.json({ tours: toursResponse });
   } catch (error) {
     next(error);
   }
