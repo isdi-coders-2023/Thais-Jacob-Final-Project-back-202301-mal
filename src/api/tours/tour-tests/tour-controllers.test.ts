@@ -124,7 +124,7 @@ describe('Given a getToursController to create an tour', () => {
     sendStatus: jest.fn().mockReturnThis(),
   } as Partial<Response>;
 
-  const tours = [
+  const tour = [
     {
       _id: 'random id test',
       tittle: 'tittle test',
@@ -142,14 +142,14 @@ describe('Given a getToursController to create an tour', () => {
 
   test('when the database response is successfull it, then it should respond with a list of tours', async () => {
     TourModel.find = jest.fn().mockImplementation(() => ({
-      exec: jest.fn().mockResolvedValue(tours),
+      exec: jest.fn().mockResolvedValue(tour),
     }));
     await getToursController(
       request as Request,
       response as Response,
       jest.fn(),
     );
-    expect(response.json).toHaveBeenCalled();
+    expect(response.json).toHaveBeenCalledWith({ tours: tour });
   });
 
   test('when the database throws an error then it should respond with status 500', async () => {
