@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import { User } from '../users/user-schema';
 
 export interface Tour {
-  tittle: string;
+  title: string;
   summary: string;
   description: string;
   video: string;
@@ -16,7 +16,7 @@ export interface Tour {
 }
 
 const tourSchema = new Schema<Tour>({
-  tittle: String,
+  title: String,
   summary: String,
   description: String,
   video: String,
