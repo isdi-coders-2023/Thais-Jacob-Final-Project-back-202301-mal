@@ -38,7 +38,7 @@ describe('Given a createTourController to create an tour', () => {
 
   const validMockRequest = {
     body: {
-      tittle: 'Test Tour',
+      title: 'Test Tour',
       description: 'This is a test tour',
       summary: 'Summary test',
       video: 'http video test',
@@ -61,7 +61,7 @@ describe('Given a createTourController to create an tour', () => {
   } as Partial<Response<Tour | { message: string }, UserLocalsAuthInfo>>;
 
   const tour = {
-    tittle: 'Test Tour',
+    title: 'Test Tour',
     description: 'This is a test tour',
     summary: 'Summary test',
     video: 'http video test',
@@ -127,7 +127,7 @@ describe('Given a getToursController to create an tour', () => {
   const tour = [
     {
       _id: 'random id test',
-      tittle: 'tittle test',
+      title: 'title test',
       summary: 'Summary test.',
       video: 'https://www.youtube.com/test',
       image: 'https://gezblnovnlcdlfebhteu.supabase.co/test.jpg',
