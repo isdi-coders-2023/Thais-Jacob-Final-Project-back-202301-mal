@@ -72,3 +72,22 @@ export const getToursController: RequestHandler = async (_req, res, next) => {
     next(error);
   }
 };
+
+export const getTourByIdController: RequestHandler<
+  { _id: string },
+  Tour | { message: string }
+> = async (req, res, next) => {
+  const { _id } = req.params;
+
+  try {
+    const tour = await TourModel.findById(_id).exec();
+
+    if (tour === null) {
+      return next(new CustomHTTPError(404, 'The tour does not exist'));
+    }
+
+    res.json(tour);
+  } catch (error) {
+    next(error);
+  }
+};
