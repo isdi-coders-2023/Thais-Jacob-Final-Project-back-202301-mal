@@ -1,7 +1,11 @@
 import { Request, Response } from 'express';
 import { Tour, TourModel } from '../tour-schema';
 import { TourRequest, UserLocalsAuthInfo } from '../../../types/models';
-import { createTourController, getToursController } from '../tour-controllers';
+import {
+  createTourController,
+  getTourByIdController,
+  getToursController,
+} from '../tour-controllers';
 import { UserModel } from '../../users/user-schema';
 import { CustomHTTPError } from '../../../utils/custom-http-error';
 
@@ -161,5 +165,75 @@ describe('Given a getToursController to create an tour', () => {
     await getToursController(request as Request, response as Response, next);
 
     expect(next).toHaveBeenCalled();
+  });
+});
+
+describe('Given a getTourByIdController', () => {
+  const mockRequest = {
+    params: { _id: 'mockId' },
+  } as Partial<Request>;
+
+  const mockResponse = {
+    sendStatus: jest.fn().mockReturnThis(),
+    json: jest.fn(),
+  } as Partial<Response>;
+
+  const next = jest.fn();
+
+  const tour = [
+    {
+      _id: 'random id test',
+      title: 'title test',
+      summary: 'Summary test.',
+      video: 'https://www.youtube.com/test',
+      image: 'https://gezblnovnlcdlfebhteu.supabase.co/test.jpg',
+      meetingPoint: 'C. Test, s/n',
+      price: 10,
+      date: '1977-11-07T00:00:00.000Z',
+      category: 'test',
+      assistants: [],
+      creator: 'random id creator',
+    },
+  ];
+
+  test('When the tour does not exist, then it should pass on an error 404', async () => {
+    TourModel.findById = jest.fn().mockReturnValue({
+      exec: jest.fn().mockResolvedValue(null),
+    });
+
+    await getTourByIdController(
+      mockRequest as Request<{ _id: string }, Tour | { message: string }>,
+      mockResponse as Response,
+      next,
+    );
+
+    expect(next).toHaveBeenCalled();
+  });
+
+  test('When an error is throw searching for id, then it should be passed on to be handled', async () => {
+    TourModel.findById = jest.fn().mockReturnValue({
+      exec: jest.fn().mockRejectedValue(null),
+    });
+
+    await getTourByIdController(
+      mockRequest as Request<{ _id: string }, Tour | { message: string }>,
+      mockResponse as Response,
+      next,
+    );
+    expect(next).toHaveBeenCalled();
+  });
+
+  test('When the tour exist, then the server should respond with it', async () => {
+    TourModel.findById = jest.fn().mockReturnValue({
+      exec: jest.fn().mockResolvedValue(tour),
+    });
+
+    await getTourByIdController(
+      mockRequest as Request<{ _id: string }, Tour | { message: string }>,
+      mockResponse as Response,
+      next,
+    );
+
+    expect(mockResponse.json).toHaveBeenCalledWith(tour);
   });
 });
