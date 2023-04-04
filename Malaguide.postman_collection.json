@@ -1,0 +1,173 @@
+{
+  "info": {
+    "_postman_id": "9df91883-19bc-4f98-86c2-3f176eb6d9f4",
+    "name": "Malaguide",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "25667902"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Demo\",\r\n    \"email\": \"demo@gmail.com\",\r\n    \"password\": \"demo123\"\r\n}"
+        },
+        "url": {
+          "raw": "https://malaguide-app-backend.onrender.com/auth/register",
+          "protocol": "https",
+          "host": ["malaguide-app-backend", "onrender", "com"],
+          "path": ["auth", "register"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"demo@gmail.com\",\r\n    \"password\": \"demo123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://malaguide-app-backend.onrender.com/auth/login",
+          "protocol": "https",
+          "host": ["malaguide-app-backend", "onrender", "com"],
+          "path": ["auth", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create tour",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZ21haWwuY29tIiwiaWF0IjoxNjgwMTgyNDk1fQ.FRjmGCMT7fblpv_ZX4meLu9Ffl7VU-2GzrzwYb_OMh4",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "title",
+              "value": "Caminito del Rey",
+              "type": "text"
+            },
+            {
+              "key": "summary",
+              "value": "Discover Caminito del Rey, a thrilling path carved into the cliffs, offering stunning views.",
+              "type": "text"
+            },
+            {
+              "key": "description",
+              "value": "Located in the heart of the Andalusian mountains, Caminito del Rey is a breathtaking walkway carved into steep cliffs, offering stunning views of the surrounding scenary. Once known as the most dangerous path in the world, this trail has been renovated to provide a thrilling yet safe experience.",
+              "type": "text"
+            },
+            {
+              "key": "date",
+              "value": "04/08/2023",
+              "type": "text"
+            },
+            {
+              "key": "meetingPoint",
+              "value": "El Caminito del Rey",
+              "type": "text"
+            },
+            {
+              "key": "price",
+              "value": "40",
+              "type": "text"
+            },
+            {
+              "key": "video",
+              "value": "https://www.youtube.com/watch?v=KcXBd7DIc78",
+              "type": "text"
+            },
+            {
+              "key": "image",
+              "type": "file",
+              "src": "/C:/Users/tjlan/Downloads/Alcazaba-of-Malaga.webp"
+            },
+            {
+              "key": "category",
+              "value": "nature",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "https://malaguide-app-backend.onrender.com/api/v1/tours/create",
+          "protocol": "https",
+          "host": ["malaguide-app-backend", "onrender", "com"],
+          "path": ["api", "v1", "tours", "create"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all tours",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZ21haWwuY29tIiwiaWF0IjoxNjgwMTgyNDk1fQ.FRjmGCMT7fblpv_ZX4meLu9Ffl7VU-2GzrzwYb_OMh4",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://malaguide-app-backend.onrender.com/api/v1/tours",
+          "protocol": "https",
+          "host": ["malaguide-app-backend", "onrender", "com"],
+          "path": ["api", "v1", "tours"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get tour by id",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZ21haWwuY29tIiwiaWF0IjoxNjgwMTgyNDk1fQ.FRjmGCMT7fblpv_ZX4meLu9Ffl7VU-2GzrzwYb_OMh4",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://malaguide-app-backend.onrender.com/api/v1/tours/6424b7124a1a42933a0df82b",
+          "protocol": "https",
+          "host": ["malaguide-app-backend", "onrender", "com"],
+          "path": ["api", "v1", "tours", "6424b7124a1a42933a0df82b"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
