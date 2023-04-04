@@ -7,7 +7,7 @@ Welcome to Malaguide, the web application that connects tourists visiting the ci
 
 In summary, Malaguide was created as the final project for the Full Stack Web Development Bootcamp by ISDI Coders. Our app helps tourists find and connect with local tour guides to make the most of their visit to Malaga. With amazing tours, guaranteed fun, and the opportunity to create unique memories in the Andalusian city, let Malaguide help you find the perfect tour guide for you.
 
-Follow the link to access the backend repository:<br>
+Follow the link to access the frontend repository:<br>
 https://github.com/thaixjacob/Thais-Jacob-Final-Project-front-202301-mal
 
 ## Technologies and Tools Used
