@@ -252,7 +252,7 @@ describe('Testing deleteTourController to an tour', () => {
 
   const next = jest.fn();
 
-  const mockAd = {
+  const mockTour = {
     name: 'mockName',
     surname: 'mockSurname',
     breed: 'mockBreed',
@@ -311,7 +311,7 @@ describe('Testing deleteTourController to an tour', () => {
       exec: jest.fn().mockResolvedValue(1),
     }));
     TourModel.findOneAndDelete = jest.fn().mockReturnValue({
-      exec: jest.fn().mockResolvedValue(mockAd),
+      exec: jest.fn().mockResolvedValue(mockTour),
     });
 
     await deleteTourController(
@@ -325,7 +325,7 @@ describe('Testing deleteTourController to an tour', () => {
       mockResponse as Response<any, UserLocalsAuthInfo>,
       next,
     );
-    expect(mockResponse.json).toHaveBeenCalledWith(mockAd);
+    expect(mockResponse.json).toHaveBeenCalledWith(mockTour);
   });
   test('When the tour exist, an tour is found but could not be deleted', async () => {
     UserModel.findOne = jest.fn().mockImplementation(() => ({
@@ -349,7 +349,7 @@ describe('Testing deleteTourController to an tour', () => {
       mockResponse as Response<any, UserLocalsAuthInfo>,
       next,
     );
-    expect(mockResponse.json).toHaveBeenCalledWith(mockAd);
+    expect(mockResponse.json).toHaveBeenCalledWith(mockTour);
   });
   test('When the tour exist, then an error is thrown while trying to delete an existing tour', async () => {
     UserModel.findOne = jest.fn().mockImplementation(() => ({
@@ -373,7 +373,7 @@ describe('Testing deleteTourController to an tour', () => {
       mockResponse as Response<any, UserLocalsAuthInfo>,
       next,
     );
-    expect(mockResponse.json).toHaveBeenCalledWith(mockAd);
+    expect(mockResponse.json).toHaveBeenCalledWith(mockTour);
   });
   test('When the tour exist, but the user is not found then the tour is not deleted', async () => {
     UserModel.findOne = jest.fn().mockImplementation(() => ({
@@ -383,7 +383,7 @@ describe('Testing deleteTourController to an tour', () => {
       exec: jest.fn().mockResolvedValue(null),
     }));
     TourModel.findOneAndDelete = jest.fn().mockReturnValue({
-      exec: jest.fn().mockResolvedValue(mockAd),
+      exec: jest.fn().mockResolvedValue(mockTour),
     });
 
     await deleteTourController(
@@ -397,7 +397,7 @@ describe('Testing deleteTourController to an tour', () => {
       mockResponse as Response<any, UserLocalsAuthInfo>,
       next,
     );
-    expect(mockResponse.json).toHaveBeenCalledWith(mockAd);
+    expect(mockResponse.json).toHaveBeenCalledWith(mockTour);
   });
   test('When the user is not found, then the tour cannot be deleted', async () => {
     UserModel.findOne = jest.fn().mockImplementation(() => ({
@@ -407,7 +407,7 @@ describe('Testing deleteTourController to an tour', () => {
       exec: jest.fn().mockResolvedValue(1),
     }));
     TourModel.findOneAndDelete = jest.fn().mockReturnValue({
-      exec: jest.fn().mockResolvedValue(mockAd),
+      exec: jest.fn().mockResolvedValue(mockTour),
     });
 
     await deleteTourController(
@@ -421,6 +421,6 @@ describe('Testing deleteTourController to an tour', () => {
       mockResponse as Response<any, UserLocalsAuthInfo>,
       next,
     );
-    expect(mockResponse.json).toHaveBeenCalledWith(mockAd);
+    expect(mockResponse.json).toHaveBeenCalledWith(mockTour);
   });
 });
