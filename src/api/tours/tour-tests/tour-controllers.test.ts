@@ -3,6 +3,7 @@ import { Tour, TourModel } from '../tour-schema';
 import { TourRequest, UserLocalsAuthInfo } from '../../../types/models';
 import {
   createTourController,
+  deleteTourController,
   getTourByIdController,
   getToursController,
 } from '../tour-controllers';
@@ -235,5 +236,191 @@ describe('Given a getTourByIdController', () => {
     );
 
     expect(mockResponse.json).toHaveBeenCalledWith(tour);
+  });
+});
+
+describe('Testing deleteTourController to an tour', () => {
+  const mockRequest = {
+    locals: { email: 'thais@gmail.com', id: '64186d711077a06023a724d9' },
+    params: { _id: '64186d711077a06023a724d9' },
+  } as Partial<Request | any>;
+
+  const mockResponse = {
+    json: jest.fn(),
+    locals: { email: 'thais@gmail.com', id: '64186d711077a06023a724d9' },
+  } as Partial<Response>;
+
+  const next = jest.fn();
+
+  const mockAd = {
+    name: 'mockName',
+    surname: 'mockSurname',
+    breed: 'mockBreed',
+    email: 'mockEmail',
+    phone: '611000000',
+    city: 'mockCity',
+    image: 'https://example.com/photo.webp',
+  };
+  UserModel.findOne = jest.fn().mockReturnValue(() => ({
+    exec: jest.fn().mockResolvedValue(1),
+  }));
+  test('When the tour does not exist, then it should pass on an error 404', async () => {
+    TourModel.findOneAndDelete = jest.fn().mockReturnValue({
+      exec: jest.fn().mockResolvedValue(null),
+    });
+
+    await deleteTourController(
+      mockRequest as Request<
+        any,
+        Tour,
+        TourRequest,
+        unknown,
+        UserLocalsAuthInfo
+      >,
+      mockResponse as Response<Tour | { message: string }, UserLocalsAuthInfo>,
+      next,
+    );
+
+    expect(next).toHaveBeenCalled();
+  });
+
+  test('When an error is throw searching for id, then it should be passed on to be handled', async () => {
+    TourModel.findOneAndDelete = jest.fn().mockReturnValue({
+      exec: jest.fn().mockRejectedValue(null),
+    });
+
+    await deleteTourController(
+      mockRequest as Request<
+        { _id: string },
+        Tour,
+        TourRequest,
+        unknown,
+        UserLocalsAuthInfo
+      >,
+      mockResponse as Response<Tour | { message: string }, UserLocalsAuthInfo>,
+      next,
+    );
+    expect(next).toHaveBeenCalled();
+  });
+
+  test('When the tour exist, then the server should respond with its all ok and delete the tour', async () => {
+    UserModel.findOne = jest.fn().mockImplementation(() => ({
+      exec: jest.fn().mockResolvedValue(1),
+    }));
+    TourModel.findOne = jest.fn().mockImplementation(() => ({
+      exec: jest.fn().mockResolvedValue(1),
+    }));
+    TourModel.findOneAndDelete = jest.fn().mockReturnValue({
+      exec: jest.fn().mockResolvedValue(mockAd),
+    });
+
+    await deleteTourController(
+      mockRequest as Request<
+        { _id: string },
+        Tour,
+        TourRequest,
+        unknown,
+        UserLocalsAuthInfo
+      >,
+      mockResponse as Response<any, UserLocalsAuthInfo>,
+      next,
+    );
+    expect(mockResponse.json).toHaveBeenCalledWith(mockAd);
+  });
+  test('When the tour exist, an tour is found but could not be deleted', async () => {
+    UserModel.findOne = jest.fn().mockImplementation(() => ({
+      exec: jest.fn().mockResolvedValue(1),
+    }));
+    TourModel.findOne = jest.fn().mockImplementation(() => ({
+      exec: jest.fn().mockResolvedValue(1),
+    }));
+    TourModel.findOneAndDelete = jest.fn().mockReturnValue({
+      exec: jest.fn().mockResolvedValue(null),
+    });
+
+    await deleteTourController(
+      mockRequest as Request<
+        { _id: string },
+        Tour,
+        TourRequest,
+        unknown,
+        UserLocalsAuthInfo
+      >,
+      mockResponse as Response<any, UserLocalsAuthInfo>,
+      next,
+    );
+    expect(mockResponse.json).toHaveBeenCalledWith(mockAd);
+  });
+  test('When the tour exist, then an error is thrown while trying to delete an existing tour', async () => {
+    UserModel.findOne = jest.fn().mockImplementation(() => ({
+      exec: jest.fn().mockResolvedValue(1),
+    }));
+    TourModel.findOne = jest.fn().mockImplementation(() => ({
+      exec: jest.fn().mockResolvedValue(1),
+    }));
+    TourModel.findOneAndDelete = jest.fn().mockReturnValue({
+      exec: jest.fn().mockRejectedValue(null),
+    });
+
+    await deleteTourController(
+      mockRequest as Request<
+        { _id: string },
+        Tour,
+        TourRequest,
+        unknown,
+        UserLocalsAuthInfo
+      >,
+      mockResponse as Response<any, UserLocalsAuthInfo>,
+      next,
+    );
+    expect(mockResponse.json).toHaveBeenCalledWith(mockAd);
+  });
+  test('When the tour exist, but the user is not found then the tour is not deleted', async () => {
+    UserModel.findOne = jest.fn().mockImplementation(() => ({
+      exec: jest.fn().mockResolvedValue(1),
+    }));
+    TourModel.findOne = jest.fn().mockImplementation(() => ({
+      exec: jest.fn().mockResolvedValue(null),
+    }));
+    TourModel.findOneAndDelete = jest.fn().mockReturnValue({
+      exec: jest.fn().mockResolvedValue(mockAd),
+    });
+
+    await deleteTourController(
+      mockRequest as Request<
+        { _id: string },
+        Tour,
+        TourRequest,
+        unknown,
+        UserLocalsAuthInfo
+      >,
+      mockResponse as Response<any, UserLocalsAuthInfo>,
+      next,
+    );
+    expect(mockResponse.json).toHaveBeenCalledWith(mockAd);
+  });
+  test('When the user is not found, then the tour cannot be deleted', async () => {
+    UserModel.findOne = jest.fn().mockImplementation(() => ({
+      exec: jest.fn().mockResolvedValue(null),
+    }));
+    TourModel.findOne = jest.fn().mockImplementation(() => ({
+      exec: jest.fn().mockResolvedValue(1),
+    }));
+    TourModel.findOneAndDelete = jest.fn().mockReturnValue({
+      exec: jest.fn().mockResolvedValue(mockAd),
+    });
+
+    await deleteTourController(
+      mockRequest as Request<
+        { _id: string },
+        Tour,
+        TourRequest,
+        unknown,
+        UserLocalsAuthInfo
+      >,
+      mockResponse as Response<any, UserLocalsAuthInfo>,
+      next,
+    );
+    expect(mockResponse.json).toHaveBeenCalledWith(mockAd);
   });
 });
