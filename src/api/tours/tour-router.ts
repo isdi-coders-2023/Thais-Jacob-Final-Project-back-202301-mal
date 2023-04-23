@@ -5,6 +5,7 @@ import {
   createTourController,
   getTourByIdController,
   getToursController,
+  deleteTourController,
 } from './tour-controllers.js';
 import tourValidation from './tour-validation.js';
 
@@ -15,5 +16,6 @@ router.use(validate(tourValidation));
 router.route('/').get(getToursController);
 router.route('/:_id').get(getTourByIdController);
 router.route('/create').post(upload.single('image'), createTourController);
+router.route('/:_id').delete(deleteTourController);
 
 export default router;

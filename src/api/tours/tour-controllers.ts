@@ -91,3 +91,48 @@ export const getTourByIdController: RequestHandler<
     next(error);
   }
 };
+
+export const deleteTourController: RequestHandler<
+  {
+    _id: string;
+  },
+  Tour,
+  TourRequest,
+  unknown,
+  UserLocalsAuthInfo
+> = async (req, res, next) => {
+  const { email } = res.locals;
+  const { _id } = req.params;
+
+  log.info('email', email);
+
+  const creatorUser = await UserModel.findOne(
+    { email },
+    { password: 0, __v: 0 },
+  ).exec();
+
+  if (creatorUser === null) {
+    return next(new CustomHTTPError(404, 'User not found'));
+  }
+
+  const tourUser = await TourModel.findOne(
+    { creator: creatorUser._id, _id },
+    { password: 0, __v: 0 },
+  ).exec();
+
+  if (tourUser === null) {
+    return next(new CustomHTTPError(404, 'Wrong user'));
+  }
+
+  try {
+    const tour = await TourModel.findOneAndDelete({ _id }).exec();
+
+    if (tour === null) {
+      return next(new CustomHTTPError(404, 'The tour does not exist'));
+    }
+
+    res.json(tour);
+  } catch (error) {
+    next(error);
+  }
+};
